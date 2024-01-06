@@ -1,11 +1,12 @@
-package dev.pilati.pinotifica.api
+package dev.pilati.pinotify.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class PiNotificaApiApplication
+class PiNotifyApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<PiNotificaApiApplication>(*args)
+	runApplication<PiNotifyApiApplication>(*args)
+	println("Hello World!")
 }
