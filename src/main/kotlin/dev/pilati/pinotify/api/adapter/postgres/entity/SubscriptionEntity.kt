@@ -6,6 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Column
 import java.util.UUID
+import org.springframework.data.repository.Repository
 
 @Entity
 @Table(name = "subscriptions")
@@ -27,3 +28,9 @@ class SubscriptionEntity (
     @Column(name = "message_template", nullable = false)
     val messageTemplate: String,
 )
+
+interface SubscriptionRepository : Repository<SubscriptionEntity, UUID> {
+    fun findByChannelId(channelId: UUID): SubscriptionEntity?
+    fun findByGuildId(guildId: UUID): List<SubscriptionEntity>
+    fun save(subscription: SubscriptionEntity): SubscriptionEntity
+}
