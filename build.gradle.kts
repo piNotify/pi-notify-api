@@ -24,6 +24,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// discord
+	implementation("net.dv8tion:JDA:5.0.0-beta.19") {
+		exclude(module = "opus-java")
+    }
 }
 
 tasks.withType<KotlinCompile> {
