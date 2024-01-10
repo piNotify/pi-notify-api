@@ -25,7 +25,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.postgresql:postgresql:42.1.4")
+	implementation("org.postgresql:postgresql:42.7.1")
 
 	// discord
 	implementation("net.dv8tion:JDA:5.0.0-beta.19") {

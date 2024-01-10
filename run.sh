@@ -1,1 +1,1 @@
-export $(cat .env | xargs) && java -jar $1
+export $(cat .env | xargs) && java -jar build/libs/api-0.0.1.jar
