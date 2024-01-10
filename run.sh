@@ -1,0 +1,1 @@
+export $(cat .env | xargs) && java -jar $1
