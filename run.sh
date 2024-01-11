@@ -1,1 +1,1 @@
-export $(cat .env | xargs) && java -jar build/libs/api-0.0.1.jar
+export $(cat .env | xargs) && java -Dspring.devtools.restart.enabled=true -jar build/libs/api-0.0.1.jar
