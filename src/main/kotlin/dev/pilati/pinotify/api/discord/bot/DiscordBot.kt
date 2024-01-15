@@ -15,7 +15,5 @@ class DiscordBot{
             .addEventListeners(AddChannelCommand)
             .addEventListeners(GuildReady)
             .build()
-
-        
     }
 }
