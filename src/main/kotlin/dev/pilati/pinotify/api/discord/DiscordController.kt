@@ -29,7 +29,28 @@ class DiscordController(
             return ResponseEntity.ok(discordLogin)
 
         } catch(e: Exception) {
-            logger.error("Error on DiscordLooginController.login", e)
+            logger.error("Error on DiscordLoginController.login", e)
+
+            return ResponseEntity.badRequest().body(
+                GenericResponse(
+                    error = true,
+                    message = "Error on Discord login"
+                )
+            )
+        }
+    }
+
+    @GetMapping("/refresh")
+    fun refresh(
+        @RequestParam refreshToken: String
+    ): ResponseEntity<Any> {
+        try{
+            
+            val discordLogin: DiscordLogin? = discordService.refresh(refreshToken)!!
+            return ResponseEntity.ok(discordLogin)
+
+        } catch(e: Exception) {
+            logger.error("Error on DiscordLoginController.refresh", e)
 
             return ResponseEntity.badRequest().body(
                 GenericResponse(

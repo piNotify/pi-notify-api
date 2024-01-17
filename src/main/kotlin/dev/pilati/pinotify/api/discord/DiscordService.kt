@@ -46,4 +46,19 @@ class DiscordService(
             .retrieve()
             .body(DiscordLogin::class.java)
     }
+
+    fun refresh(refreshToken: String): DiscordLogin? {
+        val map: MultiValueMap<String, String> = LinkedMultiValueMap<String, String>();
+        map.add("grant_type", "refresh_token")
+        map.add("refresh_token", refreshToken)
+        map.add("client_id", clientId)
+        map.add("client_secret", clientSecret)
+
+        return restClient.post()
+            .uri("/oauth2/token")
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .body(map)
+            .retrieve()
+            .body(DiscordLogin::class.java)
+    }
 }
