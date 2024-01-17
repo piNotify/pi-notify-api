@@ -44,6 +44,7 @@ object AddChannelCommand: ListenerAdapter() {
                 ActionRow.of(channel),
                 ActionRow.of(textTemplate)
             ).build()
+            
     }
 
 }

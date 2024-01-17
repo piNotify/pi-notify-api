@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.util.MultiValueMap
 import org.springframework.util.LinkedMultiValueMap
 import org.apache.commons.logging.LogFactory
-import DiscordLogin
 
 @Service
 class DiscordService(
