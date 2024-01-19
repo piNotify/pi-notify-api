@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.discord
+package dev.pilati.pinotify.api.discord.auth
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.RestController
@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.http.ResponseEntity
 import org.apache.commons.logging.LogFactory
-import dev.pilati.pinotify.api.discord.DiscordService
 import dev.pilati.pinotify.api.util.GenericResponse
 
 @RestController
-@RequestMapping("/discord")
-class DiscordController(
-    private val discordService: DiscordService
+@RequestMapping("/discord/auth")
+class DiscordAuthController(
+    private val authService: DiscordService
 ) {
-    private val logger = LogFactory.getLog(DiscordController::class.java)
+    private val logger = LogFactory.getLog(DiscordAuthController::class.java)
 
     @GetMapping("/login")
     fun login(
@@ -25,7 +24,7 @@ class DiscordController(
     ): ResponseEntity<Any> {
         try{
             
-            val discordLogin: DiscordLogin? = discordService.login(code)!!
+            val discordLogin: DiscordLogin? = authService.login(code)!!
             return ResponseEntity.ok(discordLogin)
 
         } catch(e: Exception) {
@@ -46,7 +45,7 @@ class DiscordController(
     ): ResponseEntity<Any> {
         try{
             
-            val discordLogin: DiscordLogin? = discordService.refresh(refreshToken)!!
+            val discordLogin: DiscordLogin? = authService.refresh(refreshToken)!!
             return ResponseEntity.ok(discordLogin)
 
         } catch(e: Exception) {

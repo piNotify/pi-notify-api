@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.discord
+package dev.pilati.pinotify.api.discord.auth
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service;

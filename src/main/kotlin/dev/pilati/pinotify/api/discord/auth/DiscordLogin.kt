@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.discord
+package dev.pilati.pinotify.api.discord.auth
 
 data class DiscordLogin (
     val access_token: String,
