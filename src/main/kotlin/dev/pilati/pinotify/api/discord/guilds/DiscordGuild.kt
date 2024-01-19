@@ -6,4 +6,5 @@ data class DiscordGuild (
     val icon: String?,
     val owner: Boolean,
     val permissions: String,
+    var botIsPresent: Boolean = false
 )

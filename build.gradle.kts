@@ -35,6 +35,8 @@ dependencies {
 	implementation("net.dv8tion:JDA:5.0.0-beta.19") {
 		exclude(module = "opus-java")
     }
+
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
 }
 
 tasks.withType<KotlinCompile> {
