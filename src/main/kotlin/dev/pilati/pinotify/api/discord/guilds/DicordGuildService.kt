@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient
 import org.springframework.core.ParameterizedTypeReference
+import org.apache.commons.logging.LogFactory
 import java.math.BigInteger
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.async
@@ -29,30 +30,21 @@ class DiscordGuildService(
 
     private final val DISCORD_ADMINISTRATOR_PERMISSION: BigInteger = BigInteger.valueOf(0x8)
 
-
-    fun getGuildsAdmin(accessToken: String): List<DiscordGuild> {
-        
-        var guilds: List<DiscordGuild> = restClient.get()
+    private fun getAllUserGuilds(accessToken: String): List<UserDiscordGuild> {
+        return restClient.get()
             .uri("/users/@me/guilds")
             .header("Content-Type", "application/json")
             .header("Authorization", "Bearer " + accessToken)
             .retrieve()
-            .body(object : ParameterizedTypeReference<List<DiscordGuild>>() {})!!
-
-        
-        guilds = guilds.stream()
-            .filter({guild: DiscordGuild -> isGuildAdmin(guild)})
-            .toList()
-
-        return populateBotIsPresent(guilds)
+            .body(object : ParameterizedTypeReference<List<UserDiscordGuild>>() {})!!
     }
 
-    private fun isGuildAdmin(guild: DiscordGuild): Boolean {
+    private fun isGuildAdmin(guild: UserDiscordGuild): Boolean {
         return guild.owner == true 
             || guild.permissions.toBigInteger().and(DISCORD_ADMINISTRATOR_PERMISSION).compareTo(BigInteger.ZERO) > 0
     }
 
-    private fun populateBotIsPresent(guilds: List<DiscordGuild>): List<DiscordGuild>{
+    private fun asyncPopulateBotIsPresent(guilds: List<UserDiscordGuild>): List<UserDiscordGuild>{
         runBlocking{
             coroutineScope {
                 
@@ -69,7 +61,17 @@ class DiscordGuildService(
         return guilds
     }
 
-    private fun checkBotIsPresent(guild: DiscordGuild): Boolean {
+    fun getUserGuildsAdmin(accessToken: String): List<UserDiscordGuild> {
+        var guilds = getAllUserGuilds(accessToken)
+        
+        guilds = guilds.stream()
+            .filter({guild: UserDiscordGuild -> isGuildAdmin(guild)})
+            .toList()
+
+        return asyncPopulateBotIsPresent(guilds)
+    }
+
+    private fun checkBotIsPresent(guild: UserDiscordGuild): Boolean {
         try{
             val response = restClient.get()
                 .uri("/guilds/${guild.id}/members/" + clientId)
@@ -82,5 +84,23 @@ class DiscordGuildService(
         } catch(e: Exception) {
             return false
         }
+    }
+
+    fun getUserGuild(guildId: String, accessToken: String): UserDiscordGuild{
+        val guild = getAllUserGuilds(accessToken).stream()
+            .filter({guild: UserDiscordGuild -> guild.id == guildId})
+            .findFirst()
+            .orElseThrow({GuildNotFoundException()})
+        
+        if(!isGuildAdmin(guild)){
+            throw GuildNotAdminException()
+        }
+
+        guild.botIsPresent = checkBotIsPresent(guild)
+        if(!guild.botIsPresent){
+            throw GuildNotPresentException()
+        }
+
+        return guild
     }
 }
