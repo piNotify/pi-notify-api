@@ -10,6 +10,7 @@ fun Subscription.toEntity(): SubscriptionEntity {
         guildId = this.guildId,
         textChannelId = this.textChannelId,
         messageTemplate = this.messageTemplate,
+        channel = this.channel.toEntity(),
     )
 }
 
@@ -20,5 +21,6 @@ fun SubscriptionEntity.toModel(): Subscription {
         guildId = this.guildId,
         textChannelId = this.textChannelId,
         messageTemplate = this.messageTemplate,
+        channel = this.channel.toModel(),
     )
 }

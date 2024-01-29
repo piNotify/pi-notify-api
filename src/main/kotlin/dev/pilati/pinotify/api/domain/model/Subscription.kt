@@ -5,7 +5,8 @@ import java.util.UUID
 data class Subscription (
     val id: UUID?,
     val channelId: UUID,
-    val guildId: UUID,
+    val guildId: String,
     val textChannelId: UUID,
     val messageTemplate: String,
+    val channel: Channel,
 )
