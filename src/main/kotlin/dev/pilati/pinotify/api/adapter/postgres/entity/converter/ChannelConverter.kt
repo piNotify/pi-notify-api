@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.adapter.postgres.entity.converter;
+package dev.pilati.pinotify.api.adapter.postgres.entity.converter
 
 import dev.pilati.pinotify.api.domain.model.Channel
 import dev.pilati.pinotify.api.adapter.postgres.entity.ChannelEntity

@@ -1,15 +1,13 @@
-package dev.pilati.pinotify.api.discord.event
+package dev.pilati.pinotify.api.discord.bot.event
 
-import net.dv8tion.jda.api.hooks.EventListener
-import net.dv8tion.jda.api.hooks.ListenerAdapter
-import net.dv8tion.jda.api.events.session.ReadyEvent;
+import dev.pilati.pinotify.api.discord.bot.command.CommandRegister
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent
-import net.dv8tion.jda.api.interactions.commands.Command
+import net.dv8tion.jda.api.hooks.ListenerAdapter
+import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-import dev.pilati.pinotify.api.discord.command.CommandRegister
 
 object GuildReady: ListenerAdapter() {
-    val log = LogFactory.getLog(GuildReady::class.java)
+    private val log: Log = LogFactory.getLog(GuildReady::class.java)
 
 
     override fun onGuildReady(event: GuildReadyEvent) {

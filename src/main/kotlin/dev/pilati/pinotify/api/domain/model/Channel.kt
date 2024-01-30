@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.domain.model;
+package dev.pilati.pinotify.api.domain.model
 
 import java.util.UUID
 

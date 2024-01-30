@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.adapter.postgres.entity.converter;
+package dev.pilati.pinotify.api.adapter.postgres.entity.converter
 
 import dev.pilati.pinotify.api.adapter.postgres.entity.SubscriptionEntity
 import dev.pilati.pinotify.api.domain.model.Subscription

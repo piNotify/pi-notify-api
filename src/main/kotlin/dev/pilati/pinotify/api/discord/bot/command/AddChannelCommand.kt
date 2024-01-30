@@ -1,13 +1,13 @@
-package dev.pilati.pinotify.api.discord.command
+package dev.pilati.pinotify.api.discord.bot.command
 
-import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.entities.channel.ChannelType
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.interactions.components.ActionRow
+import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu
 import net.dv8tion.jda.api.interactions.components.text.TextInput
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle
-import net.dv8tion.jda.api.interactions.components.selections.EntitySelectMenu
-import net.dv8tion.jda.api.interactions.components.ActionRow
 import net.dv8tion.jda.api.interactions.modals.Modal
-import net.dv8tion.jda.api.entities.channel.ChannelType
 
 object AddChannelCommand: ListenerAdapter() {
 
@@ -20,7 +20,7 @@ object AddChannelCommand: ListenerAdapter() {
         event.replyModal(modal).queue()
     }
 
-    fun createAddChannelModal(): Modal {
+    private fun createAddChannelModal(): Modal {
         val url: TextInput = TextInput.create("url", "Channel URL", TextInputStyle.SHORT)
             .setPlaceholder("Channel URL")
             .setRequired(true)

@@ -2,9 +2,7 @@ package dev.pilati.pinotify.api
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.apache.commons.logging.LogFactory
-import org.flywaydb.core.Flyway
-import DiscordBot
+import dev.pilati.pinotify.api.discord.bot.DiscordBot
 import dev.pilati.pinotify.api.adapter.postgres.MigrationManager
 
 @SpringBootApplication

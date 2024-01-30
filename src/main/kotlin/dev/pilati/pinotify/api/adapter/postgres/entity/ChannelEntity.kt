@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.adapter.postgres.entity;
+package dev.pilati.pinotify.api.adapter.postgres.entity
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Table

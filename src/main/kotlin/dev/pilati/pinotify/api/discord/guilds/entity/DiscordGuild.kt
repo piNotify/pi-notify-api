@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.discord.guilds
+package dev.pilati.pinotify.api.discord.guilds.entity
 
 data class DiscordGuild (
     val id: String,

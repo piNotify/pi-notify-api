@@ -1,14 +1,14 @@
 package dev.pilati.pinotify.api.discord.guilds
 
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.http.ResponseEntity
-import org.apache.commons.logging.LogFactory
+import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotAdminException
+import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotPresentException
 import dev.pilati.pinotify.api.util.GenericResponse
-import kotlin.error
+import org.apache.commons.logging.LogFactory
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/discord")
@@ -21,15 +21,15 @@ class DiscordGuildController(
     fun getGuildsAdmin(
         @RequestHeader accessToken: String
     ): ResponseEntity<Any> {
-        try{
+        return try{
 
             val guilds = guildService.getUserGuildsAdmin(accessToken)
-            return ResponseEntity.ok(guilds)
+            ResponseEntity.ok(guilds)
 
         } catch(e: Exception) {
             logger.error("Error on DiscordGuildController.getGuilds", e)
 
-            return ResponseEntity.badRequest().body(
+            ResponseEntity.badRequest().body(
                 GenericResponse(
                     error = true,
                     message = "Error getting guilds on Discord"

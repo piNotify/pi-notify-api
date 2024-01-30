@@ -1,4 +1,4 @@
-package dev.pilati.pinotify.api.discord.command
+package dev.pilati.pinotify.api.discord.bot.command
 
 import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.interactions.commands.build.Commands
@@ -12,7 +12,7 @@ class CommandRegister {
             ).queue()
     }
 
-    fun commandAddChannel(): SlashCommandData {
+    private fun commandAddChannel(): SlashCommandData {
         return Commands.slash("add-channel", "Add Channel to be notified")
     }
 }
