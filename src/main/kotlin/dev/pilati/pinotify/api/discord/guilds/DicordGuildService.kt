@@ -10,7 +10,7 @@ import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
 import java.math.BigInteger
-
+import org.apache.commons.logging.LogFactory
 @Service
 class DiscordGuildService(
     @Value("\${discord.api-url}")
@@ -29,6 +29,7 @@ class DiscordGuildService(
     private final val DISCORD_ADMINISTRATOR_PERMISSION: BigInteger = BigInteger.valueOf(0x8)
 
     private fun getAllUserGuilds(accessToken: String): List<UserDiscordGuild> {
+        LogFactory.getLog(DiscordGuildService::class.java).info("Bearer $accessToken")
         return restClient.get()
             .uri("/users/@me/guilds")
             .header("Content-Type", "application/json")
