@@ -1,6 +1,7 @@
 package dev.pilati.pinotify.api.discord.guilds
 
 import dev.pilati.pinotify.api.discord.guilds.entity.UserDiscordGuild
+import dev.pilati.pinotify.api.discord.guilds.entity.DiscordChannel
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotAdminException
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotFoundException
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotPresentException
@@ -27,6 +28,10 @@ class DiscordGuildService(
     private val restClient: RestClient = restClientBuilder.baseUrl(apiUrl).build()
 
     private final val DISCORD_ADMINISTRATOR_PERMISSION: BigInteger = BigInteger.valueOf(0x8)
+
+    private final val DISCORD_CHANNEL_TYPE_GUILD_TEXT = 0
+
+    private final val DISCORD_CHANNEL_TYPE_ANNOUNCEMENT_THREAD = 5
 
     private fun getAllUserGuilds(accessToken: String): List<UserDiscordGuild> {
         LogFactory.getLog(DiscordGuildService::class.java).info("Bearer $accessToken")
@@ -100,5 +105,22 @@ class DiscordGuildService(
         }
 
         return guild
+    }
+
+    fun getGuildTextChannels(guildId: String, accessToken: String): List<DiscordChannel> {
+        val channels: List<DiscordChannel> = restClient.get()
+            .uri("/guilds/$guildId/channels")
+            .header("Content-Type", "application/json")
+            .header("Authorization", "Bot $token")
+            .retrieve()
+            .body(object : ParameterizedTypeReference<List<DiscordChannel>>() {})!!
+
+        return channels.stream()
+            .filter { channel: DiscordChannel -> 
+                    channel.type == DISCORD_CHANNEL_TYPE_GUILD_TEXT || 
+                    channel.type == DISCORD_CHANNEL_TYPE_ANNOUNCEMENT_THREAD
+            }.sorted { 
+                c1, c2 -> c1.position.compareTo(c2.position) 
+            }.toList()
     }
 }
