@@ -1,0 +1,3 @@
+
+[*.{kt,kts}]
+ktlint_standard_no-blank-line-in-list = disabled
