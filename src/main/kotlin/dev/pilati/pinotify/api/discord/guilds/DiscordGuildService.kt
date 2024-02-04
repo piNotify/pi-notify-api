@@ -5,14 +5,23 @@ import dev.pilati.pinotify.api.discord.guilds.entity.DiscordChannel
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotAdminException
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotFoundException
 import dev.pilati.pinotify.api.discord.guilds.exception.GuildNotPresentException
-import kotlinx.coroutines.*
+import dev.pilati.pinotify.api.discord.DiscordConstants
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.ParameterizedTypeReference
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
 import java.math.BigInteger
 import org.apache.commons.logging.LogFactory
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+
 @Service
+@Suppress("SwallowedException")
+
 class DiscordGuildService(
     @Value("\${discord.api-url}")
     private val apiUrl: String,
@@ -27,12 +36,6 @@ class DiscordGuildService(
 ) {
     private val restClient: RestClient = restClientBuilder.baseUrl(apiUrl).build()
 
-    private final val DISCORD_ADMINISTRATOR_PERMISSION: BigInteger = BigInteger.valueOf(0x8)
-
-    private final val DISCORD_CHANNEL_TYPE_GUILD_TEXT = 0
-
-    private final val DISCORD_CHANNEL_TYPE_ANNOUNCEMENT_THREAD = 5
-
     private fun getAllUserGuilds(accessToken: String): List<UserDiscordGuild> {
         LogFactory.getLog(DiscordGuildService::class.java).info("Bearer $accessToken")
         return restClient.get()
@@ -44,7 +47,12 @@ class DiscordGuildService(
     }
 
     private fun isGuildAdmin(guild: UserDiscordGuild): Boolean {
-        return guild.owner || guild.permissions.toBigInteger().and(DISCORD_ADMINISTRATOR_PERMISSION).compareTo(BigInteger.ZERO) > 0
+        return guild.owner || (
+            guild.permissions
+                .toBigInteger()
+                .and(DiscordConstants.ADMINISTRATOR_PERMISSION)
+                .compareTo(BigInteger.ZERO) > 0
+        )
     }
 
     private fun asyncPopulateBotIsPresent(guilds: List<UserDiscordGuild>): List<UserDiscordGuild>{
@@ -107,7 +115,7 @@ class DiscordGuildService(
         return guild
     }
 
-    fun getGuildTextChannels(guildId: String, accessToken: String): List<DiscordChannel> {
+    fun getGuildTextChannels(guildId: String): List<DiscordChannel> {
         val channels: List<DiscordChannel> = restClient.get()
             .uri("/guilds/$guildId/channels")
             .header("Content-Type", "application/json")
@@ -117,10 +125,10 @@ class DiscordGuildService(
 
         return channels.stream()
             .filter { channel: DiscordChannel -> 
-                    channel.type == DISCORD_CHANNEL_TYPE_GUILD_TEXT || 
-                    channel.type == DISCORD_CHANNEL_TYPE_ANNOUNCEMENT_THREAD
-            }.sorted { 
-                c1, c2 -> c1.position.compareTo(c2.position) 
-            }.toList()
+                    channel.type == DiscordConstants.CHANNEL_TYPE_GUILD_TEXT || 
+                    channel.type == DiscordConstants.CHANNEL_TYPE_ANNOUNCEMENT_THREAD }
+            .sorted { 
+                c1, c2 -> c1.position.compareTo(c2.position) }
+            .toList()
     }
 }

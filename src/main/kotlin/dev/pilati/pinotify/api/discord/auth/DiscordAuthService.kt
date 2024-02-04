@@ -7,7 +7,7 @@ import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestClient
 
 @Service
-class DiscordService(
+class DiscordAuthService(
     @Value("\${discord.api-url}")
     private val apiUrl: String,
 

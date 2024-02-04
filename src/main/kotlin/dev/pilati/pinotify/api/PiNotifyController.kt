@@ -5,9 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 
 @RestController
 @RequestMapping("/")
-class PiNotifyController(){
+class PiNotifyController{
     @RequestMapping("/")
     fun hello(): String {
-        return "Hello, world!"
+        val hello = "Hello, world!"
+        return hello
     }
 }

@@ -9,7 +9,6 @@ import org.apache.commons.logging.LogFactory
 object GuildReady: ListenerAdapter() {
     private val log: Log = LogFactory.getLog(GuildReady::class.java)
 
-
     override fun onGuildReady(event: GuildReadyEvent) {
         log.info("Guild ready: " + event.guild.name)
         CommandRegister().registerAll(event.guild)

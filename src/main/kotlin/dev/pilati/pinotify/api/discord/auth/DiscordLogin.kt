@@ -1,5 +1,6 @@
 package dev.pilati.pinotify.api.discord.auth
 
+@Suppress("ConstructorParameterNaming")
 data class DiscordLogin (
     val access_token: String,
     val token_type: String,

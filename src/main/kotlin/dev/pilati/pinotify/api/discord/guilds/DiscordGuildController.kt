@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class DiscordGuildController(
     private val guildService: DiscordGuildService
 ){
-    private val logger = LogFactory.getLog(DiscordGuildService::class.java)
+    private val logger = LogFactory.getLog(DiscordGuildController::class.java)
 
     @GetMapping("/guilds/admin")
     fun getGuildsAdmin(
